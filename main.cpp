@@ -74,9 +74,7 @@ void print_tokens(const TokenStream& tokens)
 // ========================== eval ========================
 int eval(const TokenStream& tokens)
 {
-    int accumulator = 0xbadc0de;
     std::stack<Token> token_stack;
-
 
     for(const Token& token : tokens)
     {
