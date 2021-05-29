@@ -3,10 +3,8 @@
 #include <sstream>
 #include <vector>
 #include <stack>
-#include <regex>
 #include <unordered_map>
 #include <functional>
-#include <algorithm>
 
 using TokenStream = std::vector<std::string>;
 using Token = std::string;
