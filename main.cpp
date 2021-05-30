@@ -5,6 +5,7 @@
 #include <stack>
 #include <unordered_map>
 #include <functional>
+#include <fstream>
 
 using TokenStream = std::vector<std::string>;
 using Token = std::string;
@@ -24,18 +25,26 @@ std::vector<std::string> tokenize(std::string code);
 void print_tokens(const TokenStream& tokens);
 int eval(const TokenStream& tokens);
 
+std::string read_expression_from_file(const std::string& filename);
 
-int main()
+int main(int argc, char** argv)
 {
-    std::string lisp_code{ "( * 2 ( * ( - 3 4 ) 1 ) )" };
-    printf("Expression: %s\n", lisp_code.c_str());
+    if(argc != 2)
+    {
+        printf("Usage: %s <input filename>", argv[0]);
+        return 1;
+    }
 
-    TokenStream tokens = tokenize(lisp_code);
+    std::string filename{argv[1]};
+    printf("Reading expression from file \"%s\"...\n", filename.c_str());
+
+
+    std::string code = read_expression_from_file(filename);
+    TokenStream tokens = tokenize(code);
     print_tokens(tokens);
-
-    int result = eval(tokens);
-
-    printf("Result = %i", result);
+    
+    auto result = eval(tokens);
+    printf("Result: %i", result);
 
     return 0;
 }
@@ -118,3 +127,15 @@ int eval(const TokenStream& tokens)
     return std::stoi(token_stack.top());
 }
 // ========================================================
+
+
+// =================== read expression from file ====================
+std::string read_expression_from_file(const std::string& filename)
+{
+    std::ifstream file{filename};
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+
+    return buffer.str();
+}
+// ==================================================================
